@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">NoteMark</string>
+    <string name="landing_title">Your Own Collection of Notes</string>
+    <string name="landing_description">Capture your thoughts and ideas.</string>
+    <string name="login_title">Log In</string>
+    <string name="login_description">Capture your thoughts and ideas.</string>
+    <string name="login_email">Email</string>
+    <string name="login_email_placeholder">john.doe@example.com</string>
+    <string name="login_password">Password</string>
+    <string name="login_no_account">Don’t have an account?</string>
+    <string name="show_password">set the inputing password visible</string>
+    <string name="unvisible_password">\nset the inputing password unvisible</string>
+    <string name="registration_title">Create account</string>
+    <string name="registration_description">Capture your thoughts and ideas.</string>
+    <string name="username">Username</string>
+    <string name="username_placeholder">John.doe</string>
+    <string name="invalid_username_short">Username must be at least 3 characters.</string>
+    <string name="invalid_username_long">Username can’t be longer than 20 characters.</string>
+    <string name="invalid_email">Invalid email provided</string>
+    <string name="invalid_password">Password must be at least 8 characters and include a number or symbol.</string>
+    <string name="invalid_repeat_password">Passwords do not match</string>
+    <string name="login_repeat_password">Repeat password</string>
+    <string name="username_support">Use between 3 and 20 characters for your username.</string>
+    <string name="password_support">Use 8+ characters with a number or symbol for better security.</string>
+    <string name="login_invalid">Invalid login credentials</string>
+    <string name="registration_success">Success registration</string>
+    <string name="registration_fail">Failure registration</string>
+</resources>

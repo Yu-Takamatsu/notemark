@@ -1,0 +1,100 @@
+package com.yu.pl.app.challeng.notemark.navigation
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.yu.pl.app.challeng.notemark.functions.presentation.landing.LandingRoot
+import com.yu.pl.app.challeng.notemark.functions.presentation.login.LoginRoot
+import com.yu.pl.app.challeng.notemark.functions.presentation.registration.RegistrationRoot
+import com.yu.pl.app.challeng.notemark.ui.theme.BgGradient
+import com.yu.pl.app.challeng.notemark.ui.theme.titleXLarge
+
+@Composable
+fun NavigationRoot(
+    navController: NavHostController
+) {
+
+    NavHost(
+        navController = navController,
+        startDestination = Destination.Landing
+    ){
+        composable<Destination.Landing>{
+            LandingRoot(
+                onNavigateToLogin = {
+                    navController.navigate(Destination.Login){
+                        popUpTo(Destination.Landing){
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+                onNavigateToRegistration = {
+                    navController.navigate(Destination.Registration){
+                        popUpTo(Destination.Landing){
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+        composable<Destination.Login> {
+            LoginRoot(
+                navigateToRegistration = {
+                    navController.navigate(Destination.Registration){
+                        popUpTo(Destination.Login){
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                navigateAfterLogin = {
+                    navController.navigate(Destination.Dummy){
+                        launchSingleTop = true
+                        popUpTo(Destination.Login){
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+        composable<Destination.Registration> {
+            RegistrationRoot(
+                navigateToLogin = {
+                    navController.navigate(Destination.Login) {
+                        popUpTo(Destination.Registration){
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+        composable<Destination.Dummy>{
+            Box(
+                modifier = Modifier.fillMaxSize()
+                    .background(
+                        brush = MaterialTheme.colorScheme.BgGradient
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Hello",
+                    style = MaterialTheme.typography.titleXLarge,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+    }
+
+}
