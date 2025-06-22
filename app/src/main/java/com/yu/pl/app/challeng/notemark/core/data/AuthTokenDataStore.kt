@@ -18,6 +18,7 @@ class AuthTokenDataStore(private val context: Context) : AuthTokenRepository {
 
     private val accessTokenKey = stringPreferencesKey("access_token")
     private val refreshTokenKey = stringPreferencesKey("refresh_token")
+    private val userNameKey = stringPreferencesKey("userName")
 
     override suspend fun setToken(accessToken: String, refreshToken: String) {
         context.authDataStore.edit { preference ->
@@ -38,4 +39,18 @@ class AuthTokenDataStore(private val context: Context) : AuthTokenRepository {
             )
         }.firstOrNull()
     }
+
+    override suspend fun setUserName(userName: String) {
+        context.authDataStore.edit { preference ->
+            preference[userNameKey] = userName
+        }
+    }
+
+    override suspend fun getUserName(): String? {
+        return context.authDataStore.data.map { preference ->
+            preference[userNameKey]
+        }.firstOrNull()
+    }
+
+
 }

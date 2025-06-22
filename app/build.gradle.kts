@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -61,10 +62,13 @@ dependencies {
     implementation(libs.androidx.splashscreen)
     implementation(libs.androidx.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
+    //implementation(libs.androidx.navigation.serialization)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.datastore)
+
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -73,4 +77,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
 }

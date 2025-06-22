@@ -9,8 +9,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yu.pl.app.challeng.notemark.functions.presentation.registration.screen.LandscapeRegistrationScreen
 import com.yu.pl.app.challeng.notemark.functions.presentation.registration.screen.PortraitRegistrationScreen
 import com.yu.pl.app.challeng.notemark.functions.presentation.registration.screen.TabletRegistrationScreen
-import com.yu.pl.app.challeng.notemark.functions.presentation.util.getLayoutType
-import com.yu.pl.app.challeng.notemark.functions.presentation.util.model.LayoutType
+import com.yu.pl.app.challeng.notemark.core.presentation.util.getLayoutType
+import com.yu.pl.app.challeng.notemark.core.presentation.util.model.LayoutType
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 

@@ -1,4 +1,4 @@
-package com.yu.pl.app.challeng.notemark.functions.presentation.util
+package com.yu.pl.app.challeng.notemark.core.presentation.util
 
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable

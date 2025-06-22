@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import com.yu.pl.app.challeng.notemark.functions.presentation.landing.screen.LandscapeLandingScreen
 import com.yu.pl.app.challeng.notemark.functions.presentation.landing.screen.PortraitLandingScreen
 import com.yu.pl.app.challeng.notemark.functions.presentation.landing.screen.TabletLandingScreen
-import com.yu.pl.app.challeng.notemark.functions.presentation.util.getLayoutType
-import com.yu.pl.app.challeng.notemark.functions.presentation.util.model.LayoutType
+import com.yu.pl.app.challeng.notemark.core.presentation.util.getLayoutType
+import com.yu.pl.app.challeng.notemark.core.presentation.util.model.LayoutType
 
 @Composable
 fun LandingRoot(

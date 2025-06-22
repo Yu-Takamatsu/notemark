@@ -1,8 +1,8 @@
-package com.yu.pl.app.challeng.notemark.functions.presentation.util
+package com.yu.pl.app.challeng.notemark.core.presentation.util
 
 import androidx.compose.runtime.Composable
-import com.yu.pl.app.challeng.notemark.functions.presentation.util.model.LayoutType
-import com.yu.pl.app.challeng.notemark.functions.presentation.util.model.Orientation
+import com.yu.pl.app.challeng.notemark.core.presentation.util.model.LayoutType
+import com.yu.pl.app.challeng.notemark.core.presentation.util.model.Orientation
 
 @Composable
 fun getLayoutType(): LayoutType {

@@ -11,20 +11,26 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import com.yu.pl.app.challeng.notemark.functions.presentation.editnote.EditNoteRoot
 import com.yu.pl.app.challeng.notemark.functions.presentation.landing.LandingRoot
 import com.yu.pl.app.challeng.notemark.functions.presentation.login.LoginRoot
+import com.yu.pl.app.challeng.notemark.functions.presentation.models.NoteMarkUi
+import com.yu.pl.app.challeng.notemark.functions.presentation.notelist.NoteListRoot
 import com.yu.pl.app.challeng.notemark.functions.presentation.registration.RegistrationRoot
 import com.yu.pl.app.challeng.notemark.ui.theme.BgGradient
 import com.yu.pl.app.challeng.notemark.ui.theme.titleXLarge
+import kotlin.reflect.typeOf
 
 @Composable
 fun NavigationRoot(
-    navController: NavHostController
+    navController: NavHostController,
+    startDestination: Destination
 ) {
 
     NavHost(
         navController = navController,
-        startDestination = Destination.Landing
+        startDestination = startDestination
     ){
         composable<Destination.Landing>{
             LandingRoot(
@@ -58,7 +64,7 @@ fun NavigationRoot(
                     }
                 },
                 navigateAfterLogin = {
-                    navController.navigate(Destination.Dummy){
+                    navController.navigate(Destination.NoteList){
                         launchSingleTop = true
                         popUpTo(Destination.Login){
                             inclusive = true
@@ -77,6 +83,32 @@ fun NavigationRoot(
                         launchSingleTop = true
                         restoreState = true
                     }
+                }
+            )
+        }
+        composable<Destination.NoteList> {
+            NoteListRoot(
+                navigateToEditNote = { note ->
+                    navController.navigate(Destination.EditNote(
+                        note
+                    )){
+                        restoreState = true
+                    }
+                }
+            )
+        }
+        composable<Destination.EditNote>(
+            typeMap = mapOf(
+                typeOf<NoteMarkUi>() to CustomNavType.noteMarkType
+            )
+        ) { backStackEntry->
+            val editNoteDestination = backStackEntry.toRoute<Destination.EditNote>()
+            val note = editNoteDestination.note
+
+            EditNoteRoot(
+                editNote = note,
+                navigateBack = {
+                    navController.popBackStack()
                 }
             )
         }

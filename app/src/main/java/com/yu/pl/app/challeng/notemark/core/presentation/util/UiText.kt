@@ -1,4 +1,4 @@
-package com.yu.pl.app.challeng.notemark.core.presentation
+package com.yu.pl.app.challeng.notemark.core.presentation.util
 
 import android.content.Context
 import androidx.annotation.StringRes

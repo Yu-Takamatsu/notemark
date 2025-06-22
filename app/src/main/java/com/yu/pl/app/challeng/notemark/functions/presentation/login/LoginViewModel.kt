@@ -5,11 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.yu.pl.app.challeng.notemark.R
 import com.yu.pl.app.challeng.notemark.core.domain.AccountValidator
 import com.yu.pl.app.challeng.notemark.core.domain.EmailValidation
-import com.yu.pl.app.challeng.notemark.core.presentation.UiText
+import com.yu.pl.app.challeng.notemark.core.presentation.util.UiText
 import com.yu.pl.app.challeng.notemark.functions.domain.login.LoginRepository
-import com.yu.pl.app.challeng.notemark.functions.domain.login.LoginRequest
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -77,10 +75,8 @@ class LoginViewModel(
             _state.update { it.copy(isLoading = true) }
 
             val result = loginRepository.login(
-                requestData = LoginRequest(
-                    email = _state.value.email,
-                    password = _state.value.password
-                )
+                email = _state.value.email,
+                password = _state.value.password
             )
             _state.update { it.copy(isLoading = false) }
 

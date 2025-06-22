@@ -1,6 +1,8 @@
 package com.yu.pl.app.challeng.notemark
 
 import android.app.Application
+import androidx.room.Room
+import com.yu.pl.app.challeng.notemark.core.database.NoteMarkDatabase
 import com.yu.pl.app.challeng.notemark.core.di.coreModule
 import com.yu.pl.app.challeng.notemark.functions.di.FunctionsModule
 import org.koin.android.ext.koin.androidContext
@@ -20,5 +22,12 @@ class MyApplication: Application() {
                 FunctionsModule
             )
         }
+
+        Room.databaseBuilder<NoteMarkDatabase>(
+            this.applicationContext,
+            NoteMarkDatabase::class.java,
+            "note-mark.db"
+        ).build()
+
     }
 }

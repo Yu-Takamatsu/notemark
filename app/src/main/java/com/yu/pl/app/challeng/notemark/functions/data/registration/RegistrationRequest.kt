@@ -1,7 +1,6 @@
-package com.yu.pl.app.challeng.notemark.functions.domain.registration
+package com.yu.pl.app.challeng.notemark.functions.data.registration
 
 import kotlinx.serialization.Serializable
-
 
 @Serializable
 data class RegistrationRequest(

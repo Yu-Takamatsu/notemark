@@ -4,9 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yu.pl.app.challeng.notemark.R
 import com.yu.pl.app.challeng.notemark.core.domain.AccountValidator
-import com.yu.pl.app.challeng.notemark.core.presentation.UiText
+import com.yu.pl.app.challeng.notemark.core.presentation.util.UiText
 import com.yu.pl.app.challeng.notemark.functions.domain.registration.RegistrationRepository
-import com.yu.pl.app.challeng.notemark.functions.domain.registration.RegistrationRequest
 import com.yu.pl.app.challeng.notemark.functions.presentation.registration.model.ValidationModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class RegistrationViewModel(
     private val validator: AccountValidator,
-    private val repository: RegistrationRepository
+    private val repository: RegistrationRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RegistrationState())
@@ -58,34 +57,32 @@ class RegistrationViewModel(
             }
 
             val result = repository.registerAccount(
-                requestData = RegistrationRequest(
-                    email = _state.value.email,
-                    password = _state.value.password,
-                    username = _state.value.userName
-                )
+                email = _state.value.email,
+                password = _state.value.password,
+                username = _state.value.userName
             )
             _state.update {
                 it.copy(isLoading = false)
             }
-            if(result.isSuccess){
+            if (result.isSuccess) {
                 _event.send(RegistrationEvent.ShowSnackBar(UiText.ResourceString(R.string.registration_success)))
             }
 
-            if(result.isFailure){
+            if (result.isFailure) {
                 _event.send(RegistrationEvent.ShowSnackBar(UiText.ResourceString(R.string.registration_fail)))
             }
 
         }
     }
 
-    private fun togglePasswordShow(){
+    private fun togglePasswordShow() {
         _state.update {
             it.copy(isVisiblePassword = !it.isVisiblePassword)
         }
 
     }
 
-    private fun toggleRepeatPasswordShow(){
+    private fun toggleRepeatPasswordShow() {
         _state.update {
             it.copy(isVisibleRepeatPassword = !it.isVisibleRepeatPassword)
         }

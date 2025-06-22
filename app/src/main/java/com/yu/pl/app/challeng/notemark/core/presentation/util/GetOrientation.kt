@@ -1,9 +1,9 @@
-package com.yu.pl.app.challeng.notemark.functions.presentation.util
+package com.yu.pl.app.challeng.notemark.core.presentation.util
 
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
-import com.yu.pl.app.challeng.notemark.functions.presentation.util.model.Orientation
+import com.yu.pl.app.challeng.notemark.core.presentation.util.model.Orientation
 
 @Composable
 fun getOrientation(): Orientation {
