@@ -11,46 +11,48 @@ import kotlinx.coroutines.flow.map
 
 class NoteMarkDataSource(
     private val noteMarkDao: NoteMarkDao,
-    private val remoteApi: NoteMarkApi
-): NoteMarkRepository {
+    private val remoteApi: NoteMarkApi,
+) : NoteMarkRepository {
     override suspend fun createNote(noteMark: NoteMark): Result<Unit> {
         val result = noteMarkDao.insertNoteMark(noteMark.toNoteMarkEntity())
 
-        if(result != -1L){
-            val apiResult = remoteApi.createNote(noteMark)
-            if(apiResult.isSuccess){
-                noteMarkDao.updateNoteMark(noteMark.toNoteMarkEntity().copy(
-                    syncStatus = SyncStatus.SYNCED
-                ))
-            }
+        if (result != -1L) {
+            remoteApi.createNote(noteMark)
             return Result.success(Unit)
         }
         return Result.failure(Throwable("fail to insert note into local DB"))
     }
 
     override suspend fun updateNote(noteMark: NoteMark): Result<Unit> {
-        val result = noteMarkDao.updateNoteMark(noteMark.toNoteMarkEntity())
-        if(result >=1){
-            val apiResult = remoteApi.updateNote(noteMark)
-            if(apiResult.isSuccess){
-                noteMarkDao.updateNoteMark(noteMark.toNoteMarkEntity().copy(
-                    syncStatus = SyncStatus.SYNCED
-                ))
-            }
+        val entity = noteMark.toNoteMarkEntity()
+        val result = noteMarkDao.updateNoteMark(
+            id = entity.id,
+            title = entity.title,
+            content = entity.content,
+            lastUpdate = entity.lastEditedAt
+        )
+        if (result >= 1) {
+            remoteApi.updateNote(noteMark)
+            return Result.success(Unit)
         }
         return Result.failure(Throwable("fail to update Local DB"))
     }
 
     override suspend fun deleteNote(noteMark: NoteMark): Result<Unit> {
-        val result = noteMarkDao.updateNoteMark(noteMark.toNoteMarkEntity().copy(
-            isDelete = true
-        ))
 
-        if(result >=1){
-            val apiResult = remoteApi.deleteNote(noteMark)
-            if(apiResult.isSuccess){
-                noteMarkDao.deleteNoteMark(noteMark.toNoteMarkEntity())
-            }
+        val entity = noteMark.toNoteMarkEntity()
+
+        val result = noteMarkDao.updateNoteMark(
+            id = entity.id,
+            title = entity.title,
+            content = entity.content,
+            lastUpdate = entity.lastEditedAt,
+            isDelete = true
+        )
+
+        if (result >= 1) {
+            remoteApi.deleteNote(noteMark)
+            return Result.success(Unit)
         }
         return Result.failure(Throwable("fail to update Local DB"))
     }
@@ -60,6 +62,27 @@ class NoteMarkDataSource(
             list.map { entity ->
                 entity.toNoteMark()
             }
+        }
+    }
+
+    override suspend fun deleteLocalNotes(): Result<Unit> {
+        noteMarkDao.deleteAllNoteMark()
+        return Result.success(Unit)
+    }
+
+    override suspend fun loadNotesFromRemote(): Result<Unit> {
+        val notesResult = remoteApi.getNotes(-1, 0)
+        if (notesResult.isSuccess) {
+            notesResult.getOrNull()?.notes?.map { note ->
+                noteMarkDao.insertNoteMark(
+                    note.toNoteMarkEntity().copy(
+                        syncStatus = SyncStatus.SYNCED
+                    )
+                )
+            }
+            return Result.success(Unit)
+        } else {
+            return Result.failure(Exception())
         }
     }
 }

@@ -8,4 +8,5 @@ sealed interface NoteListAction {
     data object OnCreateNoteAndNavigate : NoteListAction
     data object OnCancelDelete : NoteListAction
     data object OnDeleteNote : NoteListAction
+    data object OnClickSettings: NoteListAction
 }

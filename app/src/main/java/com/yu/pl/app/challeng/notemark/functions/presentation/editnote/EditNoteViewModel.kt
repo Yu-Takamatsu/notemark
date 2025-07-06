@@ -3,9 +3,10 @@ package com.yu.pl.app.challeng.notemark.functions.presentation.editnote
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yu.pl.app.challeng.notemark.functions.domain.note.NoteMarkRepository
+import com.yu.pl.app.challeng.notemark.functions.presentation.models.NoteEditMode
 import com.yu.pl.app.challeng.notemark.functions.presentation.models.NoteMarkUi
 import com.yu.pl.app.challeng.notemark.functions.presentation.models.toNoteMark
-
+import com.yu.pl.app.challeng.notemark.functions.presentation.models.toNoteMarkUi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,6 +23,7 @@ import java.time.OffsetDateTime
 class EditNoteViewModel(
     private val noteMarkRepository: NoteMarkRepository,
     noteMark: NoteMarkUi,
+    initialMode: NoteEditMode
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -31,11 +33,17 @@ class EditNoteViewModel(
             content = noteMark.content,
             isEdit = false,
             isShowConfirmDiscard = false,
-            isLoading = false
+            isLoading = false,
+            editMode = initialMode
         )
     )
+
+    private var hasLoadedInit = false
+
     val state = _state.onStart {
-        observerInput()
+        if(!hasLoadedInit) {
+            observerInput()
+        }
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5000),
@@ -73,6 +81,12 @@ class EditNoteViewModel(
             is EditNoteAction.OnSaveNote -> {
                 saveNote()
             }
+
+            is EditNoteAction.OnChangeEditMode -> {
+                changeEditMode(action.editMode)
+            }
+
+            EditNoteAction.OnNavigateBack -> Unit
         }
     }
 
@@ -93,17 +107,32 @@ class EditNoteViewModel(
             _state.update {
                 it.copy(isLoading = true)
             }
-            noteMarkRepository.updateNote(
-                _state.value.originalNote.copy(
-                    title = _state.value.title,
-                    content = _state.value.content,
-                    lastEditedAt = OffsetDateTime.now().toEpochSecond()
-                ).toNoteMark()
-            )
-            _state.update {
-                it.copy(isLoading = false)
+
+            val updateNote = _state.value.originalNote.copy(
+                title = _state.value.title,
+                content = _state.value.content,
+                lastEditedAt = OffsetDateTime.now().toEpochSecond()
+            ).toNoteMark()
+
+            val result = noteMarkRepository.updateNote(updateNote)
+            if (result.isSuccess) {
+                _state.update {
+                    it.copy(
+                        originalNote = updateNote.toNoteMarkUi(),
+                        title = updateNote.title,
+                        content = updateNote.content,
+                        isEdit = false,
+                        isLoading = false,
+                        editMode = NoteEditMode.View
+                    )
+                }
+            }else{
+                _state.update {
+                    it.copy(
+                        isLoading = false
+                    )
+                }
             }
-            _event.send(EditNoteEvent.NavigateBack)
         }
     }
 
@@ -118,10 +147,14 @@ class EditNoteViewModel(
     private fun discard() {
         if (!_state.value.isEdit || _state.value.isShowConfirmDiscard) {
             _state.update {
-                it.copy(isShowConfirmDiscard = false, isLoading = false)
-            }
-            viewModelScope.launch {
-                _event.send(EditNoteEvent.NavigateBack)
+                EditNoteState(
+                    originalNote = it.originalNote,
+                    title = it.originalNote.title,
+                    content = it.originalNote.content,
+                    isEdit = false,
+                    isShowConfirmDiscard = false,
+                    isLoading = false
+                )
             }
         } else {
             _state.update {
@@ -135,12 +168,19 @@ class EditNoteViewModel(
             _state.map { it.title },
             _state.map { it.content }
         ) { title, content ->
-            println("title:${title}, content:$content")
             _state.update {
                 it.copy(
                     isEdit = it.originalNote.title != title || it.originalNote.content != content
                 )
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun changeEditMode(mode: NoteEditMode) {
+        _state.update {
+            it.copy(
+                editMode = mode
+            )
+        }
     }
 }

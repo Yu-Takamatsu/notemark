@@ -36,26 +36,22 @@ class NoteMarkApi(
         return Result.success(Unit)
     }
 
-    @Transaction
-    suspend fun postNote(noteMark: NoteMark){
+    private suspend fun postNote(noteMark: NoteMark){
         try {
-            noteDao.updateNoteMark(
-                noteMark.toNoteMarkEntity().copy(
-                    syncStatus = SyncStatus.SYNCED
-                )
-            )
+
             val response = httpClient.post {
                 url(apiUrl)
                 setBody(noteMark.toNoteMarkDto())
                 contentType(ContentType.Application.Json)
             }
 
-            if (response.status != HttpStatusCode.OK) {
-                throw Exception()
+            if (response.status == HttpStatusCode.OK) {
+                noteDao.updateSyncStatus(
+                    noteMark.toNoteMarkEntity().id, SyncStatus.SYNCED
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            throw e
         }
     }
 
@@ -67,25 +63,23 @@ class NoteMarkApi(
         return Result.success(Unit)
     }
 
-    suspend fun putNote(noteMark: NoteMark){
+    private suspend fun putNote(noteMark: NoteMark){
         try {
-            noteDao.updateNoteMark(
-                noteMark.toNoteMarkEntity().copy(
-                    syncStatus = SyncStatus.SYNCED
-                )
-            )
+
             val response = httpClient.put {
                 url(apiUrl)
                 setBody(noteMark.toNoteMarkDto())
                 contentType(ContentType.Application.Json)
             }
 
-            if (response.status != HttpStatusCode.OK) {
-                throw Exception()
+            if (response.status == HttpStatusCode.OK) {
+                noteDao.updateSyncStatus(
+                    id = noteMark.toNoteMarkEntity().id,
+                    status = SyncStatus.SYNCED
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            throw e
         }
     }
 
@@ -98,26 +92,24 @@ class NoteMarkApi(
     }
 
     @Transaction
-    suspend fun deleteTransaction(noteMark: NoteMark){
+    private suspend fun deleteTransaction(noteMark: NoteMark){
         try {
-            noteDao.deleteNoteMark(
-                noteMark.toNoteMarkEntity().copy(
-                    syncStatus = SyncStatus.SYNCED,
-                    isDelete = true
-                )
-            )
+
             val response = httpClient.delete {
                 url("${apiUrl}/${noteMark.id}")
                 setBody(noteMark.toNoteMarkDto())
                 contentType(ContentType.Application.Json)
             }
-
-            if (response.status != HttpStatusCode.OK) {
-                throw Exception()
+            if (response.status == HttpStatusCode.OK) {
+                noteDao.deleteNoteMark(
+                    noteMark.toNoteMarkEntity().copy(
+                        syncStatus = SyncStatus.SYNCED,
+                        isDelete = true
+                    )
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            throw e
         }
     }
 

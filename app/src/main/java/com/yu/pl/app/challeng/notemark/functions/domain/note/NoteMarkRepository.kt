@@ -8,4 +8,6 @@ interface NoteMarkRepository {
     suspend fun updateNote(noteMark: NoteMark): Result<Unit>
     suspend fun deleteNote(noteMark: NoteMark): Result<Unit>
     fun getNotes(): Flow<List<NoteMark>>
+    suspend fun deleteLocalNotes(): Result<Unit>
+    suspend fun loadNotesFromRemote(): Result<Unit>
 }

@@ -1,10 +1,10 @@
 package com.yu.pl.app.challeng.notemark.functions.di
 
-import com.yu.pl.app.challeng.notemark.functions.data.login.LoginApi
+import com.yu.pl.app.challeng.notemark.functions.data.auth.AuthApi
 import com.yu.pl.app.challeng.notemark.functions.data.note.NoteMarkApi
 import com.yu.pl.app.challeng.notemark.functions.data.note.NoteMarkDataSource
 import com.yu.pl.app.challeng.notemark.functions.data.registration.RegistrationApi
-import com.yu.pl.app.challeng.notemark.functions.domain.login.LoginRepository
+import com.yu.pl.app.challeng.notemark.functions.domain.auth.AuthRepository
 import com.yu.pl.app.challeng.notemark.functions.domain.note.NoteMarkRepository
 import com.yu.pl.app.challeng.notemark.functions.domain.registration.RegistrationRepository
 import com.yu.pl.app.challeng.notemark.functions.presentation.editnote.EditNoteViewModel
@@ -12,6 +12,7 @@ import com.yu.pl.app.challeng.notemark.functions.presentation.landing.LandingVie
 import com.yu.pl.app.challeng.notemark.functions.presentation.login.LoginViewModel
 import com.yu.pl.app.challeng.notemark.functions.presentation.notelist.NoteListViewModel
 import com.yu.pl.app.challeng.notemark.functions.presentation.registration.RegistrationViewModel
+import com.yu.pl.app.challeng.notemark.functions.presentation.settings.SettingsViewModel
 import com.yu.pl.app.challeng.notemark.functions.presentation.splash.SplashViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,8 +27,8 @@ val FunctionsModule = module {
         RegistrationApi(get())
     }.bind(RegistrationRepository::class)
     factory {
-        LoginApi(get(), get())
-    }.bind(LoginRepository::class)
+        AuthApi(get(), get())
+    }.bind(AuthRepository::class)
 
     factory {
         NoteMarkApi(get(), CoroutineScope(Dispatchers.Default + SupervisorJob()), get())
@@ -43,4 +44,5 @@ val FunctionsModule = module {
     viewModelOf(::LoginViewModel)
     viewModelOf(::NoteListViewModel)
     viewModelOf(::EditNoteViewModel)
+    viewModelOf(::SettingsViewModel)
 }

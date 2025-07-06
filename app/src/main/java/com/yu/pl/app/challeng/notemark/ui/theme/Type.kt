@@ -94,4 +94,13 @@ val Typography.titleXLarge: TextStyle
         letterSpacing = TextUnit(0.01f, TextUnitType.Sp),
     )
 
+val Typography.titleXSmall: TextStyle
+    get() = TextStyle(
+        fontFamily = SpaceGroteskFontFamily,
+        fontWeight = FontWeight.W700,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = TextUnit(0.01f, TextUnitType.Sp),
+    )
+
 

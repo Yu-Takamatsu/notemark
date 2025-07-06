@@ -1,4 +1,4 @@
-package com.yu.pl.app.challeng.notemark.functions.data.login
+package com.yu.pl.app.challeng.notemark.functions.data.auth
 
 import kotlinx.serialization.Serializable
 

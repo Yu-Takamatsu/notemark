@@ -6,7 +6,8 @@ import com.yu.pl.app.challeng.notemark.R
 import com.yu.pl.app.challeng.notemark.core.domain.AccountValidator
 import com.yu.pl.app.challeng.notemark.core.domain.EmailValidation
 import com.yu.pl.app.challeng.notemark.core.presentation.util.UiText
-import com.yu.pl.app.challeng.notemark.functions.domain.login.LoginRepository
+import com.yu.pl.app.challeng.notemark.functions.domain.auth.AuthRepository
+import com.yu.pl.app.challeng.notemark.functions.domain.note.NoteMarkRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,7 +22,8 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val validator: AccountValidator,
-    private val loginRepository: LoginRepository,
+    private val authRepository: AuthRepository,
+    private val noteMarkRepository: NoteMarkRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
@@ -74,13 +76,16 @@ class LoginViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
 
-            val result = loginRepository.login(
+            val result = authRepository.login(
                 email = _state.value.email,
                 password = _state.value.password
             )
             _state.update { it.copy(isLoading = false) }
 
             if (result.isSuccess) {
+
+                noteMarkRepository.loadNotesFromRemote()
+
                 _event.send(LoginEvent.SuccessLogin)
             }
 

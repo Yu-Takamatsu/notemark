@@ -52,5 +52,13 @@ class AuthTokenDataStore(private val context: Context) : AuthTokenRepository {
         }.firstOrNull()
     }
 
+    override suspend fun deleteToken() {
+        context.authDataStore.edit { preference ->
+            preference.remove(accessTokenKey)
+            preference.remove(refreshTokenKey)
+            preference.remove(userNameKey)
+        }
+    }
+
 
 }

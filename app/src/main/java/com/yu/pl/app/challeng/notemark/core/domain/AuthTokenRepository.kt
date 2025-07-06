@@ -7,4 +7,5 @@ interface AuthTokenRepository {
     suspend fun getToken(): AuthToken?
     suspend fun setUserName(userName:String)
     suspend fun getUserName(): String?
+    suspend fun deleteToken()
 }

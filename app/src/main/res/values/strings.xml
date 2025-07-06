@@ -38,4 +38,9 @@
     <string name="discard_update_cancel">Keep Editing</string>
     <string name="discard_update_titile">Discard Changes?</string>
     <string name="discard_update_description">You have unsaved changes. If you discard now, all changes will be lost.</string>
+    <string name="back_all_note">All notes</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_menu_logout">Log out</string>
+    <string name="last_edit_title">Last edited</string>
+    <string name="date_title">Date</string>
 </resources>

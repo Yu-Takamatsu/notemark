@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.yu.pl.app.challeng.notemark.core.domain.AuthTokenRepository
 import com.yu.pl.app.challeng.notemark.functions.domain.model.NoteMark
 import com.yu.pl.app.challeng.notemark.functions.domain.note.NoteMarkRepository
+import com.yu.pl.app.challeng.notemark.functions.presentation.models.NoteEditMode
 import com.yu.pl.app.challeng.notemark.functions.presentation.models.NoteMarkUi
 import com.yu.pl.app.challeng.notemark.functions.presentation.models.toNoteMark
 import com.yu.pl.app.challeng.notemark.functions.presentation.models.toNoteMarkUi
@@ -46,11 +47,12 @@ class NoteListViewModel(
             is NoteListAction.OnLongTapNote -> longTabNote(action.noteMark)
             NoteListAction.OnCancelDelete -> cancelDelete()
             is NoteListAction.OnDeleteNote -> deleteNote()
+            NoteListAction.OnClickSettings -> Unit
         }
     }
 
     private fun clickNote(noteMark: NoteMarkUi){
-        navigateToEditScreen(noteMark)
+        navigateToEditScreen(noteMark, NoteEditMode.View)
     }
 
     private fun createNoteAndNavigate() {
@@ -63,7 +65,7 @@ class NoteListViewModel(
                 createdAt = currentTime,
                 lastEditedAt = currentTime
             )
-            navigateToEditScreen(newNote.toNoteMarkUi())
+            navigateToEditScreen(newNote.toNoteMarkUi(), NoteEditMode.Edit)
             noteRepository.createNote(newNote)
             _state.update { it.copy(isLoading = false) }
 
@@ -114,9 +116,9 @@ class NoteListViewModel(
         }
     }
 
-    private fun navigateToEditScreen(noteMark: NoteMarkUi){
+    private fun navigateToEditScreen(noteMark: NoteMarkUi, editMode: NoteEditMode){
         viewModelScope.launch {
-            _event.send(NoteListEvent.NavigateToEditScreen(noteMark))
+            _event.send(NoteListEvent.NavigateToEditScreen(noteMark, editMode))
         }
     }
 

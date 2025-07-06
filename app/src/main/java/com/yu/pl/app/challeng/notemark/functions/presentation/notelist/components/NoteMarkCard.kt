@@ -58,7 +58,7 @@ fun NoteMarkCard(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = noteMark.dateText,
+                    text = noteMark.createDataSummary,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )

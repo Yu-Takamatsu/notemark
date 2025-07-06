@@ -19,7 +19,8 @@ data class NoteMarkEntity(
 )
 
 enum class SyncStatus{
-    NOT_SYNC,
+    NOT_POSTED,
+    NOT_UPDATED,
     SYNCED
 }
 
@@ -42,7 +43,7 @@ fun NoteMark.toNoteMarkEntity(): NoteMarkEntity {
         content = this.content,
         createdAt = this.createdAt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
         lastEditedAt = this.lastEditedAt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
-        syncStatus = SyncStatus.NOT_SYNC,
+        syncStatus = SyncStatus.NOT_POSTED,
         isDelete = false
     )
 }

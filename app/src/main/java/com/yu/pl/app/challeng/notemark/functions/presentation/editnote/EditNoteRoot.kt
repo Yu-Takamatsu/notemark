@@ -13,14 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yu.pl.app.challeng.notemark.R
 import com.yu.pl.app.challeng.notemark.core.presentation.components.NoteMarkButton
 import com.yu.pl.app.challeng.notemark.core.presentation.util.getLayoutType
-import com.yu.pl.app.challeng.notemark.functions.presentation.editnote.screen.EditNoteScreen
+import com.yu.pl.app.challeng.notemark.functions.presentation.models.NoteEditMode
 import com.yu.pl.app.challeng.notemark.functions.presentation.models.NoteMarkUi
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
@@ -29,8 +28,9 @@ import org.koin.core.parameter.parametersOf
 @Composable
 fun EditNoteRoot(
     editNote: NoteMarkUi,
+    initialMode: NoteEditMode,
     viewModel: EditNoteViewModel = koinViewModel {
-        parametersOf(editNote)
+        parametersOf(editNote, initialMode)
     },
     navigateBack: () -> Unit,
 ) {
@@ -45,12 +45,20 @@ fun EditNoteRoot(
         }
     }
 
+    val viewModelActions = { action: EditNoteAction ->
+        if(action == EditNoteAction.OnNavigateBack){
+            navigateBack()
+        }else{
+            viewModel.onAction(action)
+        }
+
+    }
+
     EditNoteScreen(
         state = state.value,
-        action = viewModel::onAction,
+        action = viewModelActions,
         layoutType = layoutType
     )
-
 
     //Confirm Delete
     if (state.value.isShowConfirmDiscard) {
