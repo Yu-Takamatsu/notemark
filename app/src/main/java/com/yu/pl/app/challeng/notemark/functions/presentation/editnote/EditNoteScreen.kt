@@ -169,7 +169,6 @@ fun EditNoteScreen(
                         ViewerNoteField(
                             modifier = Modifier.fillMaxWidth(),
                             state = state,
-                            isTable = false
                         )
                     }
 
@@ -223,7 +222,6 @@ fun EditNoteScreen(
                                 .widthIn(max = 540.dp)
                                 .align(Alignment.TopCenter),
                             state = state,
-                            isTable = false,
                             onStartScrolling = {
                                 isShowAdditionalUI = false
                             }
@@ -262,7 +260,6 @@ fun EditNoteScreen(
                         ViewerNoteField(
                             modifier = Modifier.fillMaxWidth(),
                             state = state,
-                            isTable = false
                         )
                     }
                 }
