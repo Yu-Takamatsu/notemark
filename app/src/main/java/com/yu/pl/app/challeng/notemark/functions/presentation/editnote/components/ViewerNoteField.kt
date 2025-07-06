@@ -27,7 +27,6 @@ import com.yu.pl.app.challeng.notemark.functions.presentation.editnote.EditNoteS
 fun ViewerNoteField(
     modifier: Modifier = Modifier,
     state: EditNoteState,
-    isTable: Boolean = false,
     onStartScrolling:()->Unit ={}
 ){
     val scrollState = rememberScrollState()
