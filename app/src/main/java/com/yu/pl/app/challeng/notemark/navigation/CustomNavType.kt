@@ -2,7 +2,7 @@ package com.yu.pl.app.challeng.notemark.navigation
 
 import androidx.navigation.NavType
 import androidx.savedstate.SavedState
-import com.yu.pl.app.challeng.notemark.functions.presentation.models.NoteMarkUi
+import com.yu.pl.app.challeng.notemark.features.presentation.models.NoteMarkUi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

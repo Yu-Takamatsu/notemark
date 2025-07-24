@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
-import com.yu.pl.app.challeng.notemark.functions.presentation.splash.SplashViewModel
+import com.yu.pl.app.challeng.notemark.features.presentation.splash.SplashViewModel
 import com.yu.pl.app.challeng.notemark.navigation.NavigationRoot
 import com.yu.pl.app.challeng.notemark.ui.theme.NoteMarkTheme
 import org.koin.java.KoinJavaComponent.getKoin

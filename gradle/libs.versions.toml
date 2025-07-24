@@ -1,5 +1,6 @@
 [versions]
 agp = "8.10.0"
+koinAndroidxWorkmanager = "4.1.0"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -19,6 +20,7 @@ ktor = "3.0.0"
 koin = "4.0.0"
 datastore = "1.1.7"
 ksp = "2.0.21-1.0.27"
+workRuntimeKtx = "2.10.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -64,6 +66,12 @@ koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compos
 # DataStore
 datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+
+#WorkManager
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
+#WorkManager + Koin
+koin-androidx-workmanager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koinAndroidxWorkmanager" }
+
 
 [bundles]
 koin = ["koin-core", "koin-android", "koin-androidx-compose"]
